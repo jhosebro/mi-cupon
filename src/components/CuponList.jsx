@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import * as XLSX from 'xlsx';
+import React, { useCallback, useMemo, useState, useRef } from "react";
+import * as XLSX from "xlsx";
 
 const FiltroSelect = ({ filtro, cambiarFiltro }) => (
   <select
@@ -17,14 +17,17 @@ const FiltroSelect = ({ filtro, cambiarFiltro }) => (
 const CuponRow = ({ cupon, onCambiarEstado, onEliminarCupon }) => (
   <tr>
     <td>{cupon.codigo}</td>
+    <td>{cupon.descuento}</td>
     <td>{cupon.estado}</td>
     <td>{cupon.validez}</td>
     <td>
       <button
-        className={`btn ${cupon.estado === 'válido' ? 'btn-warning' : 'btn-success'} me-2`}
+        className={`btn ${
+          cupon.estado === "válido" ? "btn-warning" : "btn-success"
+        } me-2`}
         onClick={() => onCambiarEstado(cupon.codigo)}
       >
-        {cupon.estado === 'válido' ? 'Invalidar' : 'Validar'}
+        {cupon.estado === "válido" ? "Invalidar" : "Validar"}
       </button>
       <button
         className="btn btn-danger"
@@ -38,16 +41,39 @@ const CuponRow = ({ cupon, onCambiarEstado, onEliminarCupon }) => (
 
 const CuponList = ({ cupones, setCupones, filtro, cambiarFiltro }) => {
   const [paginaActual, setPaginaActual] = useState(1);
-  const [terminoBusqueda, setTerminoBusqueda] = useState('');
+  const [terminoBusqueda, setTerminoBusqueda] = useState("");
   const cuponesPorPagina = 10;
+
+  const fileInputRef = useRef();
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const bstr = e.target.result;
+      const wb = XLSX.read(bstr, { type: "binary" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      // Transformar los datos a su formato de cupones y actualizar el estado
+      const cuponesImportados = data.slice(1).map((row) => ({
+        codigo: row[2],
+        descuento: row[0],
+        estado: row[3],
+        validez: row[1],
+      }));
+      setCupones(cuponesImportados);
+    };
+    reader.readAsBinaryString(file);
+  };
 
   const cuponesFiltrados = useMemo(() => {
     const filtradosPorEstado = Array.isArray(cupones)
-      ? filtro === 'todos'
+      ? filtro === "todos"
         ? cupones
         : cupones.filter(
             (cupon) =>
-              cupon.estado === (filtro === 'validos' ? 'válido' : 'inválido')
+              cupon.estado === (filtro === "validos" ? "válido" : "inválido")
           )
       : [];
 
@@ -74,7 +100,7 @@ const CuponList = ({ cupones, setCupones, filtro, cambiarFiltro }) => {
           if (cupon.codigo === codigoCupon) {
             return {
               ...cupon,
-              estado: cupon.estado === 'válido' ? 'inválido' : 'válido',
+              estado: cupon.estado === "válido" ? "inválido" : "válido",
             };
           }
           return cupon;
@@ -94,8 +120,8 @@ const CuponList = ({ cupones, setCupones, filtro, cambiarFiltro }) => {
   const exportarExcel = () => {
     const ws = XLSX.utils.json_to_sheet(cuponesFiltrados);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Cupones');
-    XLSX.writeFile(wb, 'lista_cupones.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, "Cupones");
+    XLSX.writeFile(wb, "lista_cupones.xlsx");
   };
 
   const cambiarPagina = (numeroPagina) => {
@@ -107,6 +133,19 @@ const CuponList = ({ cupones, setCupones, filtro, cambiarFiltro }) => {
       <div className="row">
         <h2 className="col m-2">Lista de Cupones</h2>
         <div className="col d-flex justify-content-end">
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            className="form-control"
+            style={{ display: "none" }}
+          />
+          <button
+            className="btn btn-cafe m-2"
+            onClick={() => fileInputRef.current.click()}
+          >
+            Importar desde Excel
+          </button>
           <button onClick={exportarExcel} className="btn btn-cafe m-2">
             Exportar a Excel
           </button>
@@ -124,6 +163,7 @@ const CuponList = ({ cupones, setCupones, filtro, cambiarFiltro }) => {
         <thead>
           <tr>
             <th>Código</th>
+            <th>Descuento</th>
             <th>Estado</th>
             <th>Expiración</th>
             <th>Acciones</th>
@@ -147,7 +187,7 @@ const CuponList = ({ cupones, setCupones, filtro, cambiarFiltro }) => {
               key={numero}
               onClick={() => cambiarPagina(numero + 1)}
               className={`btn m-1 ${
-                numero + 1 === paginaActual ? 'btn-cafe' : 'btn-secondary'
+                numero + 1 === paginaActual ? "btn-cafe" : "btn-secondary"
               }`}
             >
               {numero + 1}
