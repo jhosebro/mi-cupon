@@ -29,10 +29,12 @@ const CuponGenerator = ({ agregarCupon }) => {
     }
 
     const codigoCupon = generarCodigoUnico();
+    const fechaCreacion = new Date().toISOString().split('T')[0]; // Obtener fecha actual en formato AAAA-MM-DD
     const cupon = {
       ...cuponData,
       codigo: codigoCupon,
       estado: "válido",
+      fechaCreacion, // Añadir fecha de creación
     };
 
     agregarCupon(cupon);
@@ -79,7 +81,7 @@ const CuponGenerator = ({ agregarCupon }) => {
             <div className="d-flex justify-content-center">
               <button
                 type="button"
-                className="btn btn-cafe"
+                className="btn btn-primary"
                 onClick={generarCupon}
               >
                 Generar Cupón
@@ -89,15 +91,10 @@ const CuponGenerator = ({ agregarCupon }) => {
           {cuponGenerado && (
             <div className="alert alert-success mt-4">
               <h3>Cupón Generado Exitosamente!</h3>
-              <p>
-                <strong>Código:</strong> {cuponGenerado.codigo}
-              </p>
-              <p>
-                <strong>Descuento:</strong> {cuponGenerado.descuento}%
-              </p>
-              <p>
-                <strong>Validez:</strong> {cuponGenerado.validez}
-              </p>
+              <p><strong>Código:</strong> {cuponGenerado.codigo}</p>
+              <p><strong>Descuento:</strong> {cuponGenerado.descuento}%</p>
+              <p><strong>Validez:</strong> {cuponGenerado.validez}</p>
+              <p><strong>Fecha de Creación:</strong> {cuponGenerado.fechaCreacion}</p>
             </div>
           )}
         </div>

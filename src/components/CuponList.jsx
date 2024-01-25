@@ -19,6 +19,7 @@ const CuponRow = ({ cupon, onCambiarEstado, onEliminarCupon }) => (
     <td>{cupon.codigo}</td>
     <td>{cupon.descuento}</td>
     <td>{cupon.estado}</td>
+    <td>{cupon.fechaCreacion}</td>
     <td>{cupon.validez}</td>
     <td>
       <button
@@ -61,6 +62,7 @@ const CuponList = ({ cupones, setCupones, filtro, cambiarFiltro }) => {
         descuento: row[0],
         estado: row[3],
         validez: row[1],
+        fechaCreacion: row[4],
       }));
       setCupones(cuponesImportados);
     };
@@ -165,6 +167,7 @@ const CuponList = ({ cupones, setCupones, filtro, cambiarFiltro }) => {
             <th>Código</th>
             <th>Descuento</th>
             <th>Estado</th>
+            <th>Fecha de creación</th>
             <th>Expiración</th>
             <th>Acciones</th>
           </tr>
