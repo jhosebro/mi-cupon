@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar className='amarillo' expand="lg">
             <Container>
-                <Navbar.Brand as={Link} to="/">Mi Cupón</Navbar.Brand>
+                <Navbar.Brand style={{ color: '#2c2217' }} as={Link} to="/">Bono encantado</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">

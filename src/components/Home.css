@@ -1,0 +1,11 @@
+#miDiv {
+    background-image: url('../assets/fondo.jpg'); /* Ruta a tu imagen */
+    background-size: cover; /* Cubre todo el div, puedes usar también 'contain' */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center; /* Centra la imagen en el div */
+    width: 100vw; /* Ancho del div */
+    height: 100vh; /* Alto del div */
+    position: fixed;
+}
+
+

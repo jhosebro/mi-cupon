@@ -17,8 +17,14 @@ const CuponGenerator = ({ agregarCupon }) => {
 
   const generarCupon = () => {
     // Validación de datos
-    if (cuponData.descuento <= 0 || cuponData.descuento > 100 || new Date(cuponData.validez) <= new Date()) {
-      alert("Por favor, ingresa un descuento válido y una fecha de validez futura.");
+    if (
+      cuponData.descuento <= 0 ||
+      cuponData.descuento > 100 ||
+      new Date(cuponData.validez) <= new Date()
+    ) {
+      alert(
+        "Por favor, ingresa un descuento válido y una fecha de validez futura."
+      );
       return;
     }
 
@@ -70,13 +76,15 @@ const CuponGenerator = ({ agregarCupon }) => {
                 onChange={handleInputChange}
               />
             </div>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={generarCupon}
-            >
-              Generar Cupón
-            </button>
+            <div className="d-flex justify-content-center">
+              <button
+                type="button"
+                className="btn btn-cafe"
+                onClick={generarCupon}
+              >
+                Generar Cupón
+              </button>
+            </div>
           </form>
           {cuponGenerado && (
             <div className="alert alert-success mt-4">
