@@ -1,11 +1,11 @@
 import React from "react";
-import fondo from "../assets/fondo.jpg";
+import fondo from "../assets/fondo2.jpg";
 
 const Home = () => {
   return (
     <img
       src={fondo}
-      alt="fondo san martin de loba tours fundacion"
+      alt="Casa y Salon de eventos Valle Encantado"
       className="img-fluid"
       style={{ maxWidth: "100%" }}
     />
