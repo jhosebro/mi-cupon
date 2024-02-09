@@ -1,5 +1,5 @@
 import React from "react";
-import fondo from "../assets/fondo2.jpg";
+import fondo from "../assets/fondo3.jpg";
 
 const Home = () => {
   return (
